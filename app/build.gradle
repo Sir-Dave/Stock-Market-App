@@ -7,9 +7,20 @@ plugins {
     id 'com.google.devtools.ksp' version '1.6.10-1.0.2'
 }
 
+kotlin {
+    sourceSets {
+        debug {
+            kotlin.srcDir("build/generated/ksp/debug/kotlin")
+        }
+        release {
+            kotlin.srcDir("build/generated/ksp/release/kotlin")
+        }
+    }
+}
+
 android {
     namespace 'com.sirdave.composeapp'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.sirdave.composeapp"
@@ -54,7 +65,7 @@ dependencies {
 
     implementation 'androidx.core:core-ktx:1.7.0'
     implementation "androidx.compose.ui:ui:$compose_ui_version"
-    implementation 'androidx.compose.material:material:1.1.1'
+    implementation "androidx.compose.material:material:$compose_ui_version"
     implementation "androidx.compose.ui:ui-tooling-preview:$compose_ui_version"
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.1'
     implementation 'androidx.activity:activity-compose:1.3.1'
@@ -65,10 +76,10 @@ dependencies {
     androidTestImplementation "androidx.compose.ui:ui-test-junit4:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-tooling:$compose_ui_version"
     debugImplementation "androidx.compose.ui:ui-test-manifest:$compose_ui_version"
-    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.6'
+    coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:1.1.5'
 
     //Compose dependencies
-    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.6.1'
+    implementation 'androidx.lifecycle:lifecycle-viewmodel-compose:2.4.1'
     implementation "androidx.compose.material:material-icons-extended:$compose_ui_version"
     implementation "com.google.accompanist:accompanist-swiperefresh:0.27.0"
 
@@ -76,11 +87,9 @@ dependencies {
     implementation 'com.opencsv:opencsv:5.5.2'
 
     // Compose Nav Destinations
-    implementation 'io.github.raamcosta.compose-destinations:core:1.1.2-beta'
-    ksp 'io.github.raamcosta.compose-destinations:ksp:1.1.2-beta'
-
-    // Coil
-    implementation "io.coil-kt:coil-compose:1.4.0"
+    def composeNavigationVersion = "1.5.38-beta"
+    implementation "io.github.raamcosta.compose-destinations:core:$composeNavigationVersion"
+    ksp "io.github.raamcosta.compose-destinations:ksp:$composeNavigationVersion"
 
     //Dagger - Hilt
     implementation "com.google.dagger:hilt-android:2.40.5"
@@ -96,10 +105,11 @@ dependencies {
     implementation "com.squareup.okhttp3:logging-interceptor:5.0.0-alpha.3"
 
     // Room
-    implementation "androidx.room:room-runtime:2.5.1"
-    kapt "androidx.room:room-compiler:2.5.1"
+    def roomVersion = "2.4.2"
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
 
     // Kotlin Extensions and Coroutines support for Room
-    implementation "androidx.room:room-ktx:2.5.1"
+    implementation "androidx.room:room-ktx:$roomVersion"
 
 }
