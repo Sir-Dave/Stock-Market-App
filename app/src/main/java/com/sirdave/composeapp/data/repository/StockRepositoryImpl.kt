@@ -17,12 +17,12 @@ import javax.inject.Singleton
 
 @Singleton
 class StockRepositoryImpl @Inject constructor(
-    val db: StockDatabase,
-    val api: StockApi,
-    val companyListingParser: CSVParser<CompanyListing>
+    private val db: StockDatabase,
+    private val api: StockApi,
+    private val companyListingParser: CSVParser<CompanyListing>
 ): StockRepository {
 
-    val dao = db.dao
+    private val dao = db.dao
 
     override suspend fun getCompanyListings(
         fetchFromRemote: Boolean,
