@@ -2,8 +2,10 @@ package com.sirdave.composeapp.di
 
 import com.sirdave.composeapp.data.csv.CSVParser
 import com.sirdave.composeapp.data.csv.CompanyListingsParser
+import com.sirdave.composeapp.data.csv.IntradayInfoParser
 import com.sirdave.composeapp.data.repository.StockRepositoryImpl
 import com.sirdave.composeapp.domain.model.CompanyListing
+import com.sirdave.composeapp.domain.model.IntradayInfo
 import com.sirdave.composeapp.domain.repository.StockRepository
 import dagger.Binds
 import dagger.Module
@@ -17,9 +19,15 @@ abstract class RepositoryModule {
 
     @Binds
     @Singleton
-    abstract fun bindCompanyListingsParse(
+    abstract fun bindCompanyListingsParser(
         companyListingsParser: CompanyListingsParser
     ): CSVParser<CompanyListing>
+
+    @Binds
+    @Singleton
+    abstract fun bindIntradayInfoParser(
+        intradayInfoParser: IntradayInfoParser
+    ): CSVParser<IntradayInfo>
 
     @Binds
     @Singleton
