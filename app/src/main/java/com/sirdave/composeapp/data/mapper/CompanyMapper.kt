@@ -1,6 +1,8 @@
 package com.sirdave.composeapp.data.mapper
 
 import com.sirdave.composeapp.data.local.CompanyListingEntity
+import com.sirdave.composeapp.data.remote.dto.CompanyInfoDto
+import com.sirdave.composeapp.domain.model.CompanyInfo
 import com.sirdave.composeapp.domain.model.CompanyListing
 
 fun CompanyListingEntity.toCompanyListing(): CompanyListing {
@@ -16,5 +18,15 @@ fun CompanyListing.toCompanyListingEntity(): CompanyListingEntity {
         name = name,
         symbol = symbol,
         exchange = exchange
+    )
+}
+
+fun CompanyInfoDto.toCompanyInfo(): CompanyInfo{
+    return CompanyInfo(
+        name = name ?: "",
+        symbol = symbol ?: "",
+        description = description ?: "",
+        industry = industry ?: "",
+        country = country ?: ""
     )
 }
