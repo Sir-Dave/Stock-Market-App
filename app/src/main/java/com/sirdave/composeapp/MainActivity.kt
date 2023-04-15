@@ -7,7 +7,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material.Surface
 import androidx.compose.ui.Modifier
 import com.ramcosta.composedestinations.DestinationsNavHost
-import com.sirdave.composeapp.presentation.company_listings.NavGraphs
+import com.sirdave.composeapp.presentation.NavGraphs 
 import com.sirdave.composeapp.ui.theme.ComposeAppTheme
 import dagger.hilt.android.AndroidEntryPoint
 
