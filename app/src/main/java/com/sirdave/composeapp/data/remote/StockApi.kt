@@ -1,5 +1,6 @@
 package com.sirdave.composeapp.data.remote
 
+import com.sirdave.composeapp.BuildConfig
 import com.sirdave.composeapp.data.remote.dto.CompanyInfoDto
 import okhttp3.ResponseBody
 import retrofit2.http.GET
@@ -27,6 +28,6 @@ interface StockApi {
 
     companion object{
         const val BASE_URL = "https://alphavantage.co"
-        const val API_KEY = "8W5OVM6JUKVF8XQN"
+        const val API_KEY = BuildConfig.API_KEY
     }
 }
