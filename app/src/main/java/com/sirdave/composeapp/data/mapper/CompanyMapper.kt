@@ -1,5 +1,6 @@
 package com.sirdave.composeapp.data.mapper
 
+import com.sirdave.composeapp.data.local.CompanyInfoEntity
 import com.sirdave.composeapp.data.local.CompanyListingEntity
 import com.sirdave.composeapp.data.remote.dto.CompanyInfoDto
 import com.sirdave.composeapp.domain.model.CompanyInfo
@@ -23,6 +24,26 @@ fun CompanyListing.toCompanyListingEntity(): CompanyListingEntity {
 
 fun CompanyInfoDto.toCompanyInfo(): CompanyInfo{
     return CompanyInfo(
+        name = name ?: "",
+        symbol = symbol ?: "",
+        description = description ?: "",
+        industry = industry ?: "",
+        country = country ?: ""
+    )
+}
+
+fun CompanyInfoEntity.toCompanyInfo(): CompanyInfo{
+    return CompanyInfo(
+        name = name,
+        symbol = symbol,
+        description = description,
+        industry = industry,
+        country = country
+    )
+}
+
+fun CompanyInfoDto.toCompanyInfoEntity(): CompanyInfoEntity{
+    return CompanyInfoEntity(
         name = name ?: "",
         symbol = symbol ?: "",
         description = description ?: "",
