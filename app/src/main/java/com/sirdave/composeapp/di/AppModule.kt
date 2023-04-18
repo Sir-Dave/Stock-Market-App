@@ -36,7 +36,7 @@ object AppModule {
             app,
             StockDatabase::class.java,
             "stock_db.db"
-        ).build()
+        ).fallbackToDestructiveMigration().build()
     }
 
 }
