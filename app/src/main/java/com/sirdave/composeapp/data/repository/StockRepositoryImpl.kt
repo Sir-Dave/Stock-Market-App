@@ -3,10 +3,7 @@ package com.sirdave.composeapp.data.repository
 import android.util.Log
 import com.sirdave.composeapp.data.csv.CSVParser
 import com.sirdave.composeapp.data.local.StockDatabase
-import com.sirdave.composeapp.data.mapper.toCompanyInfo
-import com.sirdave.composeapp.data.mapper.toCompanyInfoEntity
-import com.sirdave.composeapp.data.mapper.toCompanyListing
-import com.sirdave.composeapp.data.mapper.toCompanyListingEntity
+import com.sirdave.composeapp.data.mapper.*
 import com.sirdave.composeapp.data.remote.StockApi
 import com.sirdave.composeapp.domain.model.CompanyInfo
 import com.sirdave.composeapp.domain.model.CompanyListing
@@ -91,8 +88,8 @@ class StockRepositoryImpl @Inject constructor(
                 val newLocalListing = dao.getCompanyBySymbol(symbol)
                 Resource.Success(newLocalListing?.toCompanyInfo())
             }
-            else Resource.Success(localListing.toCompanyInfo())
 
+            else Resource.Success(localListing.toCompanyInfo())
         }
 
         catch (ex: IOException){
@@ -107,6 +104,32 @@ class StockRepositoryImpl @Inject constructor(
 
     override suspend fun getIntradayInfo(symbol: String): Resource<List<IntradayInfo>> {
         return try {
+
+            val localListing = dao.getCompanyAndIntradayInfo(symbol)
+            if (localListing == null){
+                Log.d(TAG, "loading intraday info from API")
+                val response = api.getIntraDayInfo(symbol)
+                val results = intradayInfoParser.parse(response.byteStream())
+                dao.insertIntraDayInfo(results.map {
+                    it.toIntradayInfoEntity(symbol)
+                })
+
+                val newLocalListing = dao.getCompanyAndIntradayInfo(symbol)
+                val intradayInfoEntities = newLocalListing?.intradayInfoEntities
+                Resource.Success(intradayInfoEntities?.map {
+                    it.toIntradayInfo()
+                })
+            }
+
+            else {
+                Log.d(TAG, "loading intraday info from DB")
+                val intradayInfoEntities = localListing.intradayInfoEntities
+                Resource.Success(intradayInfoEntities.map {
+                    it.toIntradayInfo()
+                })
+            }
+
+
             val response = api.getIntraDayInfo(symbol)
             val results = intradayInfoParser.parse(response.byteStream())
             Resource.Success(results)

@@ -4,6 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
+import androidx.room.Transaction
 
 @Dao
 interface StockDao {
@@ -23,6 +24,14 @@ interface StockDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertCompanyInfo(companyInfoEntity: CompanyInfoEntity)
+
     @Query("SELECT * FROM companyInfo WHERE symbol == :symbol")
     suspend fun getCompanyBySymbol(symbol: String): CompanyInfoEntity?
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertIntraDayInfo(intradayInfoEntities: List<IntradayInfoEntity>)
+
+    @Transaction
+    @Query("SELECT * FROM companyInfo WHERE symbol == :symbol")
+    suspend fun getCompanyAndIntradayInfo(symbol: String): CompanyInfoWithIntradayInfo?
 }
