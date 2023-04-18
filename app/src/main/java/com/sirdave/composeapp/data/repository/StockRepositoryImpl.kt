@@ -1,6 +1,5 @@
 package com.sirdave.composeapp.data.repository
 
-import android.util.Log
 import com.sirdave.composeapp.data.csv.CSVParser
 import com.sirdave.composeapp.data.local.StockDatabase
 import com.sirdave.composeapp.data.mapper.*
@@ -26,8 +25,6 @@ class StockRepositoryImpl @Inject constructor(
 ): StockRepository {
 
     private val dao = db.dao
-
-    private val TAG = "StockRepositoryImpl"
 
     override suspend fun getCompanyListings(
         fetchFromRemote: Boolean,
@@ -107,7 +104,6 @@ class StockRepositoryImpl @Inject constructor(
 
             val localListing = dao.getCompanyAndIntradayInfo(symbol)
             if (localListing == null){
-                Log.d(TAG, "loading intraday info from API")
                 val response = api.getIntraDayInfo(symbol)
                 val results = intradayInfoParser.parse(response.byteStream())
                 dao.insertIntraDayInfo(results.map {
@@ -122,7 +118,6 @@ class StockRepositoryImpl @Inject constructor(
             }
 
             else {
-                Log.d(TAG, "loading intraday info from DB")
                 val intradayInfoEntities = localListing.intradayInfoEntities
                 Resource.Success(intradayInfoEntities.map {
                     it.toIntradayInfo()

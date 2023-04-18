@@ -22,16 +22,6 @@ fun CompanyListing.toCompanyListingEntity(): CompanyListingEntity {
     )
 }
 
-fun CompanyInfoDto.toCompanyInfo(): CompanyInfo{
-    return CompanyInfo(
-        name = name ?: "",
-        symbol = symbol ?: "",
-        description = description ?: "",
-        industry = industry ?: "",
-        country = country ?: ""
-    )
-}
-
 fun CompanyInfoEntity.toCompanyInfo(): CompanyInfo{
     return CompanyInfo(
         name = name,
