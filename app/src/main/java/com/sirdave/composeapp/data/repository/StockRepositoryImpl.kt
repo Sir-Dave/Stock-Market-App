@@ -1,8 +1,10 @@
 package com.sirdave.composeapp.data.repository
 
+import android.util.Log
 import com.sirdave.composeapp.data.csv.CSVParser
 import com.sirdave.composeapp.data.local.StockDatabase
 import com.sirdave.composeapp.data.mapper.toCompanyInfo
+import com.sirdave.composeapp.data.mapper.toCompanyInfoEntity
 import com.sirdave.composeapp.data.mapper.toCompanyListing
 import com.sirdave.composeapp.data.mapper.toCompanyListingEntity
 import com.sirdave.composeapp.data.remote.StockApi
@@ -27,6 +29,8 @@ class StockRepositoryImpl @Inject constructor(
 ): StockRepository {
 
     private val dao = db.dao
+
+    private val TAG = "StockRepositoryImpl"
 
     override suspend fun getCompanyListings(
         fetchFromRemote: Boolean,
@@ -79,8 +83,16 @@ class StockRepositoryImpl @Inject constructor(
 
     override suspend fun getCompanyInfo(symbol: String): Resource<CompanyInfo> {
         return try {
-            val result = api.getCompanyInfo(symbol)
-            Resource.Success(result.toCompanyInfo())
+            val localListing = dao.getCompanyBySymbol(symbol)
+
+            if (localListing == null){
+                val result = api.getCompanyInfo(symbol)
+                dao.insertCompanyInfo(result.toCompanyInfoEntity())
+                val newLocalListing = dao.getCompanyBySymbol(symbol)
+                Resource.Success(newLocalListing?.toCompanyInfo())
+            }
+            else Resource.Success(localListing.toCompanyInfo())
+
         }
 
         catch (ex: IOException){
